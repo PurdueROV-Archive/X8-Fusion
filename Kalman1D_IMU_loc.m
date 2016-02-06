@@ -40,7 +40,7 @@ for k = 2:length(dt)
     % Correct
     X(1,k) = Xk1 + K(1)*error;
     % Add to bias for making next prediction better
-    X(2,k) = X(2,k-1) + K(2)*error;
+    X(2,k) = Xk2 + K(2)*error;
 end
 toc
 
