@@ -1,0 +1,15 @@
+function [ Xrot, MR] = rotate2( Xg, Rx, Ry, Rz )
+%Rotate Xu with the vector R (radians)
+%   Xu: position in as global unit vector
+%   Xr: resulting rotated vector
+%   R: 3D rotation in radians.
+
+k = 1;
+% Around X
+    
+Xr = cos(Rz(k))*Xg(1) -sin(Rz(k))*Xg(2); 
+Yr = sin(Rz(k))*Xg(1) +cos(Rz(k))*Xg(2);
+
+
+end
+
