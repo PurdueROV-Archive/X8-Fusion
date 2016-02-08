@@ -1,10 +1,20 @@
-#include "main.h"
-
+//#include "main.h"
+#include "matrices.h"
+#include "Kalman.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
+/*
+typedef enum {
+    DIR_X = 0,
+    DIR_Y = 1,
+    DIR_Z = 2,
+}direction;
 
+vect2_f Kalman_rotation(float u, float z, float dt, direction dir);
+vect2_f Kalman_location(float u, float z, float dt, direction dir);
+ */
 
 int main(int argc, char const *argv[])
 {
@@ -29,7 +39,7 @@ int main(int argc, char const *argv[])
  		i++;	
 	}
 
-	vect2_f Rx[5000], Ry[5000];
+	vect2_f Rx[5000], Ry[5000], estZ[5000];
 	for (i = 0; i < 5000; ++i)
 	{
 		float eRx, eRy;
@@ -38,14 +48,144 @@ int main(int argc, char const *argv[])
 
 		Rx[i] = Kalman_rotation(Gxf[i], eRx, dtf[i], DIR_X);
 		Ry[i] = Kalman_rotation(Gyf[i], eRy, dtf[i], DIR_Y);
+        
+        
+        estZ[i] = Kalman_location(Azf[i],zf[i],dtf[i],DIR_Z);
 	}
 
 	FILE *fpout = fopen("output.txt","w");
 	for (i = 0; i < 5000; ++i)
 	{
-		fprintf(fpout, "%f, %f\t %f, %f\n", Rx[i].a, Rx[i].b, Ry[i].a, Ry[i].b);
+		fprintf(fpout, "%f, %f\t %f, %f\t %f, %f\n", Rx[i].a, Rx[i].b, Ry[i].a, Ry[i].b, estZ[i].a, estZ[i].b);
 	}
 
 
 	return 0;
 }
+
+/*
+
+
+//dt is measured in MICROSECONDS, if another timestep is used, change this
+//u = accelleration
+//z = measured position in millimeters
+vect2_f Kalman_location(float u, float z, float dt, direction dir)
+{
+    //old position and velocity values
+    static vect2_f oldX_x = {0,0};
+    static vect2_f oldX_y = {0,0};
+    static vect2_f oldX_z = {0,0};
+    
+    //precomputed gains
+    static vect2_f K_x = {0.02, 0.1};
+    static vect2_f K_y = {0.02, 0.1};
+    static vect2_f K_z = {0.02, 0.1};
+    
+    vect2_f X;
+    vect2_f K;
+    vect2_f oldX;
+    //set up appropriate vectors for the current state
+    switch (dir)
+    {
+        case DIR_X:
+            oldX = oldX_x;
+            K = K_x;
+            break;
+        case DIR_Y:
+            oldX = oldX_y;
+            K = K_y;
+            break;
+        case DIR_Z:
+            oldX = oldX_z;
+            K = K_z;
+            break;
+    }
+    
+    //prediction
+    X.a = oldX.a + oldX.b + u * dt * dt / 2;
+    X.b = oldX.b + u * dt;
+    
+    //error = measured - predicted
+    float error = z - X.a;
+    
+    //actual
+    X = add2_f(X, mul2_f(K, error));
+    
+    switch (dir)
+    {
+        case DIR_X:
+            oldX_x = X;
+            break;
+        case DIR_Y:
+            oldX_y = X;
+            break;
+        case DIR_Z:
+            oldX_z = X;
+            break;
+    }
+    
+    return X;
+}
+
+
+
+//u, z is in milli-radians (1000th of 1 radian)
+vect2_f Kalman_rotation(float u, float z, float dt, direction dir)
+{
+    //old position and velocity values
+    static vect2_f oldX_x = {0,0};
+    static vect2_f oldX_y = {0,0};
+    static vect2_f oldX_z = {0,0};
+    
+    //precomputed gains
+    static vect2_f K_x = {0.02, -0.2};
+    static vect2_f K_y = {0.02, -0.2};
+    static vect2_f K_z = {0.02, -0.2};
+    
+    vect2_f X;
+    vect2_f K;
+    vect2_f oldX;
+    //set up appropriate vectors for the current state
+    switch (dir)
+    {
+        case DIR_X:
+            oldX = oldX_x;
+            K = K_x;
+            break;
+        case DIR_Y:
+            oldX = oldX_y;
+            K = K_y;
+            break;
+        case DIR_Z:
+            oldX = oldX_z;
+            K = K_z;
+            break;
+    }
+    
+    //prediction
+    X.a = oldX.a + (u - oldX.b)*dt;
+    //dont update X.b because we have no data for the x_dot prediction
+    
+    //error = measured - predicted
+    float error = z - X.a;
+    
+    //actual
+    X = add2_f(X, mul2_f(K, error));
+    
+    switch (dir)
+    {
+        case DIR_X:
+            oldX_x = X;
+            break;
+        case DIR_Y:
+            oldX_y = X;
+            break;
+        case DIR_Z:
+            oldX_z = X;
+            break;
+    }
+    
+    return X;
+}
+
+*/
