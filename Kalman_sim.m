@@ -11,6 +11,7 @@ holdN = 1;      % hold reference for # accelrometer samples
 Q = 0.1;  % "Movement variation"
 R = 0.3162;     % "Location Measurement noise"
 
+% K for this 0.05716, 0.01694
 
 % Intinalize
 F = [1, dt;     % State transistion
