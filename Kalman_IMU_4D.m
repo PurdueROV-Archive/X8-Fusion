@@ -64,3 +64,6 @@ K = [0.02;
  figure(3)
  plot([estZ', Z, vZ', Zs']);
  
+ %fid = fopen('otherdata.txt','w');
+ %fprintf(fid,'%f, %f\t %f, %f\t %f, %f\n',Rx(1,:), Rx(2,:), Ry(1,:), Ry(2,:), estZ(1,:), estZ(2,:))
+ 

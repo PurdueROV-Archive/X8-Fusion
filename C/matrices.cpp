@@ -190,6 +190,23 @@ matrix2_2 matMul_22x22(matrix2_2 a, matrix2_2 b)
     return result;
 }
 
+matrix3_3 matMul_33x33(matrix3_3 m1, matrix3_3 m2)
+{
+    matrix3_3 result;
+    result.a.x = dot(m1.a, vect3Make(m2.a.x, m2.b.x, m2.c.x));
+    result.a.y = dot(m1.a, vect3Make(m2.a.y, m2.b.y, m2.c.y));
+    result.a.z = dot(m1.a, vect3Make(m2.a.z, m2.b.z, m2.c.z));
+    
+    result.b.x = dot(m1.b, vect3Make(m2.a.x, m2.b.x, m2.c.x));
+    result.b.y = dot(m1.b, vect3Make(m2.a.y, m2.b.y, m2.c.y));
+    result.b.z = dot(m1.b, vect3Make(m2.a.z, m2.b.z, m2.c.z));
+    
+    result.c.x = dot(m1.c, vect3Make(m2.a.x, m2.b.x, m2.c.x));
+    result.c.y = dot(m1.c, vect3Make(m2.a.y, m2.b.y, m2.c.y));
+    result.c.z = dot(m1.c, vect3Make(m2.a.z, m2.b.z, m2.c.z));
+    return result;
+}
+
 matrix2_2 invert2_2(matrix2_2 m)
 {
     matrix2_2 result;
