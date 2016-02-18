@@ -44,8 +44,6 @@ for k = 2:length(dt)
 end
 toc
 
-figure(19)
-plot(Xd'-X')
 
 end
 

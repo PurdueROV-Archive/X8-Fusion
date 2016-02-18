@@ -3,9 +3,9 @@ clear all
 find_optimal = 0;
 complimentary = 0;
 
-dt = 0.1;      % Sampling delay
+dt = 0.003;      % Sampling delay
 t = 0:dt:10;    % time
-holdN = 1;      % hold reference for # accelrometer samples
+holdN = 100;      % hold reference for # accelrometer samples
 
 % Kalman gains
 Q = 0.1;  % "Movement variation"
@@ -23,7 +23,7 @@ B = [dt^2 /2;
 H = [1, 0]; % Observation model
 
 % Ground thurth
-a = 10*cos(pi*t/10)+10*cos(pi*t);     % Acceleration
+a = 10*cos(pi*t/5)+100*cos(pi*t);     % Acceleration
 loc = [0;     % Location
      0];    % Speed
 for k = 2:length(a)
@@ -32,7 +32,7 @@ end
 
 
 % Measurments (added noise)
-u = a + 30*(rand(1,length(a))-0.5);
+u = a + 100*(rand(1,length(a))+cos(pi*t/3)/10-0.5);
 z = loc(1,:) + 100*(rand(1,length(a))-0.5);
 
 % Sample and hold z

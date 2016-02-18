@@ -17,7 +17,7 @@ X = [0;     % Location
  % Covariane martix
 Q = oQ^2 * [dt^4/4 dt^3/2; dt^3/2 dt^2]; 
 P = eye(2).*Q;
-tic
+%tic
  % Perform the Kalman filtering
 for k = 2:length(t)
     % Predict
@@ -35,12 +35,12 @@ for k = 2:length(t)
     
     Kvec(:,k) = K;
 end
-toc
+%toc
 
 figure(10)
 plot(Kvec');
 
-tic
+%tic
  % Perform the Kalman filtering, optimized
 for k = 2:length(dt)
     % Predict
@@ -53,7 +53,7 @@ for k = 2:length(dt)
     % Add to bias for making next prediction better
     X(2,k) = Xk2 + K(2)*error;
 end
-toc
+%toc
 
 end
 

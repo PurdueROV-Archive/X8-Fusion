@@ -4,6 +4,10 @@ function [ Xr, MR] = rotate( Xg, Rx, Ry, Rz )
 %   Xr: resulting rotated vector
 %   R: 3D rotation in radians.
 
+% Rotation order yaw-pitch-roll (order of z, followed by y, followed by x)
+% Tait-Bryan angles
+% See http://danceswithcode.net/engineeringnotes/rotations_in_3d/rotations_in_3d_part1.html
+
 
 for k = 1:length(Rx)
     % Rotation matrix
@@ -22,7 +26,7 @@ for k = 1:length(Rx)
             sin(Rz(k)),   cos(Rz(k)),     0;
             0,          0,          1];
 
-    MR = MX*MY*MZ;
+    MR = MZ*MY*MX;
 
     Xr(k,:) = MR*Xg(k,:)';
 end

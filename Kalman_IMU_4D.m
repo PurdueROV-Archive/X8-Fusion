@@ -2,8 +2,8 @@ clear all
 
 load('Logs/IMU_log_03.mat');
 
-K = [0.02;
-    -0.2];
+K = [0.01;
+    -0.1];
  
  %Scale all variable to SI units
  DT = DT/1000000;   % DT is in us
@@ -27,10 +27,13 @@ K = [0.02;
  
 % Rotate acceleration from its local coordinates too global
 % This means the reverse direction of the tilt of the system so -R
- A = rotate([Ax, Ay, Az], -Rx(1,:), -Ry(1,:), -Rz(1,:));
- 
+% A = rotate([Ax, Ay, Az], -Rx(1,:), -Ry(1,:), -Rz(1,:));
+A = [Ax, Ay, Az];
+A = rotateY(A, -Ry(1,:));
+A = rotateX(A, -Rx(1,:));
+
  % Subtract gravitation
- A(:,3) = A(:,3) - 9.82;
+ A(:,3) = A(:,3) - 11;
  
  % A calibration hack here:
  %A(:,1) = A(:,1) - mean(A(100:500,1));
@@ -38,8 +41,8 @@ K = [0.02;
  %A(:,3) = A(:,3) - mean(A(100:500,3));
  
  
- K = [0.02;
-    0.1];
+ K = [0.01;
+    0.05];
  estZ = Kalman1D_IMU_loc( A(:,3), Z, DT, K );
  
  % Low pass reference and derivate as a reference
@@ -62,5 +65,5 @@ K = [0.02;
  plot(A)
  
  figure(3)
- plot([estZ', Z, vZ', Zs']);
+ plot([estZ', Z, vZ', Zs', A(:,3)/10]);
  

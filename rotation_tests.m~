@@ -1,0 +1,57 @@
+clear all
+% rotation_tests
+
+a = [0,0,1];
+
+ar = rotate(a, 0.35, 0.35, 0);
+b= ar; %[0.1,0.5,9.8];
+
+theta1 = atan2(norm(cross(a,b)),dot(a,b));
+theta2 = acos(dot(a,b));
+%theta3 = atan2(x1*y2-x2*y1,x1*x2+y1*y2)
+theta3 = atan2(a(1)*b(2)-a(2)*b(1),a(1)*a(2)+b(1)*b(2));
+
+
+
+% Do rotation in order of yaw-pitch-roll (z,y,x)
+
+% Refernce vector (pure gravity)
+a = [0,1,0];
+
+% Rotate reference
+b = rotateZ(a, 1);
+b = rotateY(a, 0.35);
+b = rotateX(b, 0.35)
+
+accelX = b(1);
+accelY = b(2);
+accelZ = b(3);
+
+% Calculate the rotated angle
+accelAngleX = atan2(-accelY, accelZ)
+accelAngleY = atan2(accelX, sqrt(accelY*accelY + accelZ*accelZ))
+
+
+% Rotate back to check result
+c = rotateX(b, -accelAngleX);
+c = rotateY(c, -accelAngleY);
+c = rotateZ(c, -1)
+
+
+
+
+% For reference
+% Simplified one
+rx = atan2(-accelY, sqrt(accelX*accelX + accelZ*accelZ));
+ry = atan2(accelX, sqrt(accelY*accelY + accelZ*accelZ));
+
+dx = rotateX(b, -rx);
+dy = rotateY(dx, -ry);
+
+% Simplified two
+r2x = atan2(-accelY, accelZ);
+r2y = atan2(accelX, accelZ);
+
+ex = rotateX(b, -r2x);
+ey = rotateY(dx, -r2y);
+

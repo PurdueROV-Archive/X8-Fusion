@@ -3,12 +3,13 @@ function [ Xrot] = rotateZ( Xg, Rz )
 %   Xg: position in as global unit vector
 %   Xr: resulting rotated vector
 %   Rz: Rotation in radians 
+%   Both vectors assumed to be of same length
 
-k = 1;
+
 % Around X
     
-Xr = cos(Rz(k))*Xg(1) -sin(Rz(k))*Xg(2); 
-Yr = sin(Rz(k))*Xg(1) +cos(Rz(k))*Xg(2);
+Xr = cos(Rz)*Xg(1) -sin(Rz)*Xg(2); 
+Yr = sin(Rz)*Xg(1) +cos(Rz)*Xg(2);
 
 Xrot = [Xr, Yr, Xg(3)];
 
