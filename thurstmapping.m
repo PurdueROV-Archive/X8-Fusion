@@ -11,8 +11,8 @@ clear all;
 F = [50,0,0,0,0,0]';
 
 % Pivot offset
-pivoff = [0.2, 0, 0]'; % m
-COM = [1.31, 0.10, 0.31]';
+pivoff = [0, 0, 0]'; % m
+COM = [1.31, 0.0, 0.31]'; % inches
 %pivoff = COM;
 COM = [COM COM COM COM COM COM COM COM];
 
@@ -67,14 +67,16 @@ F(1:3) = F(1:3) + cross(pivoff,F(4:6));
 % Build matrix
 % Force
 
-
-M = rot; 
-%M(1,:) = zeros(6);
+% Force
+M = rot;  
 % Force momentum
 M(4:6,:) = cross(rot,loc,1);
 %M(abs(M) < 0.01) = 0;
 fid = fopen('results.txt','w');
-val = round(pinv(M)*1024);
+Tmap = pinv(M);
+Tmap(:,4:6) = Tmap(:,4:6)/10; % "Nm" is a lot stronger unit then N
+val = round(Tmap*1024);
+
 
 for y = 1:1:8
     fprintf(fid, ['\tmapper_matrices.matrices[0].t%d = vect6Make(' sprintf('%5d, ',val(y,1:5)) '%5d);\n'], y, val(y,6));
