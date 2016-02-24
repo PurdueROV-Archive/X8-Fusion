@@ -98,6 +98,7 @@ vect2 vect2Make(int, int);
 
 vect8 matMul_86x61(matrix8_6, vect6);
 vect3 matMul_33x31(matrix3_3, vect3);
+matrix3_3 matMul_33x33(matrix3_3 m1, matrix3_3 m2);
 matrix2_2 matMul_22x22(matrix2_2, matrix2_2);
 
 matrix2_2 invert2_2(matrix2_2);

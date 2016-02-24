@@ -1,0 +1,15 @@
+z = easydata(:,1);
+u = easydata(:,2);
+
+X(1) = z[1];
+mdt = 0.1;
+for k = 2:101
+Xk1 = X(1,k-1) + X(2,k-1)*mdt + mdt^2/2 *u(k);
+Xk2 = X(2,k-1) + u(k)*mdt;
+% Prediction error
+error = z(k) - Xk1;
+% Correct
+X(1,k) = Xk1 + K(1)*error;
+% Add to bias for making next prediction better
+X(2,k) = Xk2 + K(2)*error;
+end
