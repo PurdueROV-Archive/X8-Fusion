@@ -1,6 +1,6 @@
 clear all
 
-load('IMU_log_02.mat');
+load('Logs/attitude01.mat');
 
 find_optimal = 0;
 
@@ -8,14 +8,17 @@ K = [0.05;
     -0.05];
  
  %Scale all variable to SI units
- DT = DT/1000000;   % DT is in us
+ DT = ones(length(Ax),1)/100;
+ %DT = DT/1000000;   % DT is in us
  Ax = 4*9.81*Ax/32768;   % signed 16 bit 2g
  Ay = 4*9.81*Ay/32768;
  Az = 4*9.81*Az/32768;
- Gx = 17.4533*Gx/32768; % signed 16 bit radians/s
- Gy = 17.4533*Gy/32768;
- Gz = 17.4533*Gz/32768;
- 
+ %Gx = 17.4533*Gx/32768; % signed 16 bit radians/s
+ %Gy = 17.4533*Gy/32768;
+ %Gz = 17.4533*Gz/32768;
+ Gx = 180/pi*Gx/10000;
+ Gy = 180/pi*Gy/10000;
+ Gz = 180/pi*Gz/10000;
  
  [eRx, eRy] = acc2rot(Ax,Ay,Az);
  
