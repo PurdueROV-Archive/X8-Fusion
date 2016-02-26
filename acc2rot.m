@@ -8,8 +8,8 @@ function [ Rx, Ry ] = acc2rot( Ax, Ay, Az )
 
 % Correct method
 % Calculate the rotated angle
-Ry = atan2(Ax, Az);
-Rx = atan2(-Ay, sqrt(Ax.*Ax + Az.*Az));
+Ry = atan2(-Ax, Az);
+Rx = atan2(Ay, sqrt(Ay.*Ay + Az.*Az));
 
 
 end

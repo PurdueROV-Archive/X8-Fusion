@@ -1,11 +1,11 @@
 clear all
 
-load('Logs/attitude01.mat');
+load('Logs/attitude02.mat');
 
 find_optimal = 0;
 
-K = [0.05;
-    -0.05];
+K = [0.005;
+    -0.00002];
  
  %Scale all variable to SI units
  DT = ones(length(Ax),1)/100;
@@ -16,9 +16,9 @@ K = [0.05;
  %Gx = 17.4533*Gx/32768; % signed 16 bit radians/s
  %Gy = 17.4533*Gy/32768;
  %Gz = 17.4533*Gz/32768;
- Gx = 180/pi*Gx/10000;
- Gy = 180/pi*Gy/10000;
- Gz = 180/pi*Gz/10000;
+ Gx = 2*pi/180*Gx/10000;
+ Gy = 2*pi/180*Gy/10000;
+ Gz = 2*pi/180*Gz/10000;
  
  [eRx, eRy] = acc2rot(Ax,Ay,Az);
  
@@ -53,23 +53,26 @@ K = [0.05;
  Rx = Kalman1D_IMU(Gx, eRx, DT, K);
  Ry = Kalman1D_IMU(Gy, eRy, DT, K);
  
- cRx = compfilter(Gx, eRx, 0.02, mean(DT));
- cRy = compfilter(Gy, eRy, 0.02, mean(DT));
+ cRx = compfilter(Gx/2, eRx, 0.01, mean(DT));
+ cRx2 = compfilter(Gx, eRx, 0.01, mean(DT));
+ cRy = compfilter(Gy, eRy, 0.00001, mean(DT));
  
  
  figure(1)
- subplot(2,1,1)
- plot([Rx', eRx])
+ title('angles')
+ %subplot(2,1,1)
+ plot([Rx(1,:)',10*Rx(2,:)', eRx])
  hold on
- plot(cRx(1,:), 'black');
+ plot([cRx(1,:)',cRx2(1,:)']);
  hold off;
- subplot(2,1,2)
- plot([Ry', eRy])
- hold on
- plot(cRy(1,:), 'black');
- hold off;
+ %subplot(2,1,2)
+%  figure(2)
+%  plot([Ry', eRy])
+%  hold on
+%  plot(cRy(1,:), 'black');
+%  hold off;
  
- figure(2)
- plot([Rx(1,:)'-eRx, Ry(1,:)'-eRy])
- 
+ %figure(3)
+ %plot([Rx(1,:)'-eRx, Ry(1,:)'-eRy])
+ %title('Error')
  

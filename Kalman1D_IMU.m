@@ -5,7 +5,7 @@ function [ X ] = Kalman1D_IMU( u, z, dt, K )
 %   K = Pre computed Kalman gain
 
  % Estimated state
-X = [0;     % Alpha (angle)
+X = [z(1);     % Alpha (angle)
      0];    % Bias
 
  % Intinalize
