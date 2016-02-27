@@ -1,0 +1,9 @@
+	mapper_matrices.matrices[0].t1 = vect6Make(  272,   732,     0,     0,     0,  -131);
+	mapper_matrices.matrices[0].t2 = vect6Make(  272,  -732,     0,     0,     0,   131);
+	mapper_matrices.matrices[0].t3 = vect6Make( -272,   765,     0,     0,     0,   131);
+	mapper_matrices.matrices[0].t4 = vect6Make( -272,  -765,     0,     0,     0,  -131);
+	mapper_matrices.matrices[0].t5 = vect6Make(  -19,    14,   228,   181,   236,     0);
+	mapper_matrices.matrices[0].t6 = vect6Make(  -19,   -14,   228,  -181,   236,     0);
+	mapper_matrices.matrices[0].t7 = vect6Make(   19,    14,   284,   181,  -236,     0);
+	mapper_matrices.matrices[0].t8 = vect6Make(   19,   -14,   284,  -181,  -236,     0);
+
