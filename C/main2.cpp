@@ -24,7 +24,7 @@ int main(void)
     
     vect2_f est[101];
     for (int j = 0; j < 101; ++j) {
-        est[j] = Kalman_location(acc[j], loc[j], dt[j], DIR_X);
+        est[j] = Kalman_locationZ(acc[j], loc[j], dt[j]);
     }
     
     FILE *fpout = fopen("simpleoutput.txt","w");
