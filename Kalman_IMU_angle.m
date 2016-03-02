@@ -5,7 +5,7 @@ load('Logs/attitude02.mat');
 find_optimal = 0;
 
 K = [0.005;
-    -0.00002];
+    -0.00];
  
  %Scale all variable to SI units
  DT = ones(length(Ax),1)/100;
@@ -50,10 +50,11 @@ K = [0.005;
  end
 
  
- Rx = Kalman1D_IMU_dyn(Gx, eRx, DT, K);
+ [Rx, Kd] = Kalman1D_IMU_dyn(Gx, eRx, DT, K);
  Ry = Kalman1D_IMU(Gy, eRy, DT, K);
  
- cRx = compfilter(Gx, eRx, 0.001, mean(DT));
+ cRx = compfilter(Gx, eRx, 0.05, mean(DT));
+ cRx2 = compfilter(Gx, eRx, 0.00001, mean(DT));
  cRy = compfilter(Gy, eRy, 0.00001, mean(DT));
  
  
@@ -62,7 +63,7 @@ K = [0.005;
  %subplot(2,1,1)
  plot([Rx(1,:)',10*Rx(2,:)', eRx])
  hold on
- plot([cRx(1,:)',cRy(1,:)']);
+ plot([cRx(1,:)',cRx2(1,:)']);
  hold off;
  %subplot(2,1,2)
 %  figure(2)
@@ -74,4 +75,6 @@ K = [0.005;
  %figure(3)
  %plot([Rx(1,:)'-eRx, Ry(1,:)'-eRy])
  %title('Error')
+ figure(4)
+ plot([Kd(1,:); Kd(2,:)]')
  

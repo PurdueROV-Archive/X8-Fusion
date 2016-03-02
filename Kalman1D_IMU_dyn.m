@@ -1,4 +1,4 @@
-function [ X ] = Kalman1D_IMU( u, z, dt, K )
+function [ X, K ] = Kalman1D_IMU_dyn( u, z, dt, K )
 % 1D rotational Kalman filtering of IMU data
 %   u = Gyro
 %   z = estimated rotation from Acc and Mag data
@@ -16,12 +16,14 @@ for k = 2:length(dt)
     error = z(k) - Xk1;
     
     % Dynamic filter strength
-    K(1) = K(1)*0.99 + 0.01*(0.001+0.01*u(k));
+    K(1,k) = K(1,k-1)*0.99 + 0.01*(0.003+0.005*abs(u(k))^2);
+    
+              
     
     % Correct
-    X(1,k) = Xk1 + K(1)*error;
+    X(1,k) = Xk1 + K(1,k)*error;
     % Add to bias for making next prediction better
-    X(2,k) = X(2,k-1) + K(2)*error;
+    X(2,k) = X(2,k-1) + K(2,1)*error;
 end
 
 end
