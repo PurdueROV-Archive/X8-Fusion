@@ -11,5 +11,6 @@ vect2_f Kalman_location(float u, float z, float dt, int dir);
 
 vect2_f Kalman_rotation(float u, float z, float dt, int dir);
 
+vect2_f Kalman_locationZ(float u, float z, float dt);
 
 #endif

@@ -71,6 +71,10 @@ vect2_f Kalman_location(float u, float z, float dt, int dir)
 
 
 
+
+
+
+
 //u, z is in milli-radians (1000th of 1 radian)
 vect2_f Kalman_rotation(float u, float z, float dt, int dir)
 {
@@ -128,6 +132,57 @@ vect2_f Kalman_rotation(float u, float z, float dt, int dir)
 	}
 
 	return X;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vect2_f Kalman_locationZ(float u, float z, float dt)
+{
+    static vect2_f oldX;// = {0,0};
+    
+    //precomputed gain
+    static vect2_f K = {0.05716, 0.01694};
+    
+    vect2_f X;
+    //set up appropriate vectors for the current state
+    
+    //printf("oldX = %lf, %lf\n",oldX.a,oldX.b);
+    //printf("u = %lf, z = %lf\n",u,z);
+    
+    //prediction
+    X.a = oldX.a + oldX.b + u * dt * dt / 2;
+    X.b = oldX.b + u * dt;
+    
+    //error = measured - predicted
+    float error = z - X.a;
+    
+    //actual
+    X = add2_f(X, mul2_f(K, error));
+    oldX = X;
+    
+    printf("X = %lf, %lf\n",X.a,X.b);
+    
+    return X;
 }
 
 

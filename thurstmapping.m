@@ -82,7 +82,8 @@ for y = 1:1:8
     fprintf(fid, ['\tmapper_matrices.matrices[0].t%d = vect6Make(' sprintf('%5d, ',val(y,1:5)) '%5d);\n'], y, val(y,6));
 end
     fprintf(fid,'\n');
-%{
+
+
 for x = 1:1:8
 M = rot; 
 
@@ -96,7 +97,10 @@ M(:,x) = zeros([6 1]); %take the first motor "offline"
 % Solve the linear equation system for minimum 2-norm on the thrust
 % This spreads out the thrust on as many thruster as possible!
 % Taking M\F will allways give two thruster unused.
-val = round(pinv(M)*1024);
+Tmap = pinv(M);
+Tmap(:,4:6) = Tmap(:,4:6)/10; % "Nm" is a lot stronger unit then N
+val = round(Tmap*1024);
+
     for y = 1:1:8
         fprintf(fid, ['\tmapper_matrices.matrices[%d].t%d = vect6Make(' sprintf('%5d, ',val(y,1:5)) '%5d);\n'], x, y, val(y,6));
     end
@@ -120,4 +124,4 @@ Twanted = [32000;
     0]*748;
 
 Fwanted = pinv(val)*Twanted;
-    %}
+
