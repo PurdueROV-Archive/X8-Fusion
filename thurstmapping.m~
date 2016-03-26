@@ -71,8 +71,8 @@ F(1:3) = F(1:3) + cross(pivoff,F(4:6));
 M = rot;  
 % Force momentum
 M(4:6,:) = cross(rot,loc,1);
-M(:,5) = zeros([6 1]);
-M(:,8) = zeros([6 1]);
+M(:,6) = zeros([6 1]);
+M(:,) = zeros([6 1]);
 %M(abs(M) < 0.01) = 0;
 fid = fopen('results.txt','w');
 Tmap = pinv(M);
@@ -80,7 +80,7 @@ Tmap(:,4:6) = Tmap(:,4:6)/10; % "Nm" is a lot stronger unit then N
 val = round(Tmap*1024);
 
 for y = 1:1:8
-    fprintf(fid, ['\tmapper_matrices.matrices[%d].t%d = vect6Make(' sprintf('%5d, ',val(y,1:5)) '%5d);\n'], 10, y, val(y,6));
+    fprintf(fid, ['\tmapper_matrices.matrices[%d].t%d = vect6Make(' sprintf('%5d, ',val(y,1:5)) '%5d);\n'], 0, y, val(y,6));
 end
 fprintf(fid,'\n');
 
