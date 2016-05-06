@@ -1,6 +1,9 @@
 clear all
 
 load('Logs/attitude02.mat');
+% ONLY for attitue02.mat
+m = (Gx(2172)+Gx(2176))/2
+Gx(2173:2175) = Gx(2173:2175) +m-mean(Gx(2173:2175));
 
 find_optimal = 0;
 
